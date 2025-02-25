@@ -1,0 +1,25 @@
+{
+  "name": "yapara",
+  "version": "1.0.0",
+  "description": "yet another process parallelizer",
+  "type": "module",
+  "main": "yapara.js",
+  "scripts": {
+    "test": "node test-linify.mjs && node test-output-handlers.mjs",
+    "start": "node yapara.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davebenson/yapara.git"
+  },
+  "keywords": [
+    "process",
+    "parallelizer"
+  ],
+  "author": "Dave Benson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davebenson/yapara/issues"
+  },
+  "homepage": "https://github.com/davebenson/yapara#readme"
+}
