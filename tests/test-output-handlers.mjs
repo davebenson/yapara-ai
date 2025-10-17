@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import test from 'node:test';
-import { OUTPUT_HANDLERS_TYPES } from './output-handlers.mjs';
+import { OUTPUT_HANDLERS_TYPES } from '../lib/output-handlers.mjs';
 import { Writable } from 'node:stream';
 
 // Mock output handler classes for testing

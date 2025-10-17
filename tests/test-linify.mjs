@@ -1,5 +1,5 @@
 
-import {bufferArrayLinify} from './linify.mjs';
+import {bufferArrayLinify} from '../lib/linify.mjs';
 import assert from 'node:assert';
 import test from 'node:test';
 
