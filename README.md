@@ -32,12 +32,33 @@ Options:
   --version, -v     Show version
   --max=N           Maximum number of concurrent tasks (default: 4)
   --format=FMT      Output format (default: colored)
-  --terminate=T     Termination policy (default: any-error)
-                    Options: any-error, all-error, none
+  --stdin, -        Read commands from standard input, one per line
+
+Note that the output-format has no bearing
+on these options, which allow you to 
+  --write-out[=T]   Write each process's output to file whose name is in template T.
+                    Default T is output-%{I|06d}.
+  --write-err[=T]   Write each process's output to file whose name is in template T.
+                    Default T is output-%{I|06d}.
   --output-dir=DIR  Save each task's output to separate files in this directory
-  --stdin           Read commands from standard input, one per line
-  -                 Read commands from standard input, one per line
 ```
+
+
+Template syntax:
+```
+  Most characters are passed through, except '%'.
+  The following %-sequences are recognized.
+  Unknown %-sequences will cause an error.
+    %%              A literal percent.
+    %i              The index of the task.
+    %I              The index of the task, 0-based.
+
+  Numeric values may be prefixed with the similar modifiers
+  to printf. For example %06i is the 6-digit index, zero-padded.
+  The padding specifiers are recognized, as is 'x' for hex
+  and 'o' for octal.
+```
+
 
 ### Available Output Formats
 
@@ -46,12 +67,34 @@ Options:
 - `line_by_line` - Line-by-line, with task name header
 - `numbered` - Line-by-line with task name and line number
 - `colored` - Line-by-line, colored by process index
+- `jsonl` - Output events in JSONL format.
+- `protobuf` - Output events in 
 
-### Termination Policies
+#### JSONL Options
 
-- `any-error` - Terminate all tasks if any task exits with an error
-- `all-error` - Continue running tasks until all are complete, even if some fail
-- `none` - Never terminate tasks based on exit codes
+
+
+### Termination Policy
+
+Ideally, all your tasks would complete succesfully.
+
+How do we handle processes that terminate unsuccessfully,
+either due to a signal or a non-zero exit status?
+
+By default, we let all processes run.
+
+The exit status is:
+- 0: all processes succeeded
+- 1: usage errors, etc.
+- 2: some process was killed by a signal
+- 3: some processes failed with nonzero exit-status
+- 4: all processes failed with nonzero exit-status
+
+- --abort-on-error - Terminate all tasks if any task exits with an error
+
+Some error conditions can be ignored:
+- --ignore-errors[=CODES] - Treat these error codes as success.
+- --ignore-signals[=SIGNALS] - Treat these signals as success.
 
 ## Examples
 

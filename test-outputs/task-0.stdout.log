@@ -1,0 +1,4 @@
+ls -la
+echo "Hello, world!"
+node -e "console.log('Node.js is running')"
+cat package.json
