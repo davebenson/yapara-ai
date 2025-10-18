@@ -1,0 +1,28 @@
+
+enum EventType {
+  START,
+  JOB_START,
+  JOB_STREAM_CLOSE,
+  DATA,
+  JOB_END,
+  END                   // all jobs done
+}
+
+message Event {
+  EventType type = 1;
+  uint64 timestamp = 2;         // unix-time in milliseconds 
+  int32 task_index = 3;         // 1-based; 0 is for non-task-based events
+  binary data = 4;              // for DATA
+  int32 fd = 5;                 // for DATA: 1 for stdout, 2 for stderr
+  boolean killed = 6;           // for JOB_END, if terminated by signal
+  int exit_status = 7;          // for JOB_END and !killed, or END
+  int signal_number = 8;        // for JOB_END and killed
+  map<string, string> env = 9;  // for START
+  repeated string cmdline = 10; // for START
+}
+
+//
+// NOTES on Events:
+//   `DONE`:
+//      the final event, indicates that the yapara process ran to completion
+

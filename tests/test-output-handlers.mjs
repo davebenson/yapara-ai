@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import test from 'node:test';
-import { OUTPUT_HANDLERS_TYPES } from '../lib/output-handlers.mjs';
+import { OUTPUT_HANDLER_TYPES } from '../lib/output-handlers.mjs';
 import { Writable } from 'node:stream';
 
 // Mock output handler classes for testing
@@ -86,7 +86,7 @@ class MockTask {
 // Test each output handler type
 test('OutputHandlerRaw', async (t) => {
   // Raw handler just pipes, so we can test if piping was set up
-  const handler = OUTPUT_HANDLERS_TYPES.raw_mixed.make();
+  const handler = OUTPUT_HANDLER_TYPES.raw_mixed.make();
   const task = new MockTask('test-task');
   
   handler.handleOutput(task);
@@ -99,7 +99,7 @@ test('OutputHandlerLineByLineBare', async (t) => {
   const tester = new MockHandlerTester();
   
   try {
-    const handler = OUTPUT_HANDLERS_TYPES.bare.make();
+    const handler = OUTPUT_HANDLER_TYPES.bare.make();
     const task = new MockTask('test-task');
     
     handler.handleOutput(task);
@@ -124,7 +124,7 @@ test('OutputHandlerLineByLineWithName', async (t) => {
   const tester = new MockHandlerTester();
   
   try {
-    const handler = OUTPUT_HANDLERS_TYPES.line_by_line.make();
+    const handler = OUTPUT_HANDLER_TYPES.line_by_line.make();
     const task = new MockTask('test-task');
     
     handler.handleOutput(task);
@@ -149,7 +149,7 @@ test('OutputHandlerLineByLineWithNameAndNumber', async (t) => {
   const tester = new MockHandlerTester();
   
   try {
-    const handler = OUTPUT_HANDLERS_TYPES.numbered.make();
+    const handler = OUTPUT_HANDLER_TYPES.numbered.make();
     const task = new MockTask('test-task');
     
     handler.handleOutput(task);
@@ -174,7 +174,7 @@ test('OutputHandlerLineByLineColored', async (t) => {
   const tester = new MockHandlerTester();
   
   try {
-    const handler = OUTPUT_HANDLERS_TYPES.colored.make();
+    const handler = OUTPUT_HANDLER_TYPES.colored.make();
     const task = new MockTask('test-task', 1); // Using index 1 for predictable color
     
     handler.handleOutput(task);
