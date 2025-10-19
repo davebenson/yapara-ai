@@ -23,8 +23,8 @@ npm link  # Optional: makes yapara available as a global command
 ## Usage
 
 ```
-Usage: yapara [options] command1 [args...] [command2 [args...]] ...
-   or: yapara [options] - < commands.txt
+Usage: yapara [options] command [args...]
+   or: yapara [options] - < commands-or-args.txt
    or: some_command | yapara [options] --stdin
 
 Options:
@@ -32,15 +32,28 @@ Options:
   --version, -v     Show version
   --max=N           Maximum number of concurrent tasks (default: 4)
   --format=FMT      Output format (default: colored)
-  --stdin, -        Read commands from standard input, one per line
-
-Note that the output-format has no bearing
-on these options, which allow you to 
-  --write-out[=T]   Write each process's output to file whose name is in template T.
-                    Default T is output-%{I|06d}.
-  --write-err[=T]   Write each process's output to file whose name is in template T.
-                    Default T is output-%{I|06d}.
+  --terminate-on-failure Terminate if any process fails.
   --output-dir=DIR  Save each task's output to separate files in this directory
+  --input=FILENAME  TODO
+
+Available output formats:
+    raw_mixed    - raw binary, mixed together
+    bare         - line-by-line, no header
+    task_header  - line-by-line, header based on task number
+    numbered     - line-by-line with header and line-number
+    colored      - line-by-line, colored by process-index
+    jsonl        - JSONL output (output assumed to be UTF8)
+    jsonl_mixed  - line-by-line (output is UTF-8 strings, or binary)
+    jsonl_binary - line-by-line (output is binary)
+    protobuf     - protobuf encoded entries, with 32-bit little-endian size prefix
+
+Examples:
+  yapara --max=8 ls -la find . -name "*.js"
+  yapara --format=numbered grep -r "TODO" . python test.py
+  find . -type f -name "*.log" | yapara --stdin --format=bare cat
+  yapara --max=16 - < my_commands.txt
+  yapara --output-dir=./logs grep -r "ERROR" ./logs/* find /var/log -type f -mtime -1
+
 ```
 
 
