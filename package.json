@@ -5,7 +5,7 @@
   "type": "module",
   "main": "yapara.js",
   "scripts": {
-    "test": "node tests/test-linify.mjs && node tests/test-output-handlers.mjs",
+    "test": "node tests/test-linify.mjs && node tests/test-output-handlers.mjs && node tests/test-format-string.mjs",
     "start": "node yapara.js"
   },
   "repository": {
