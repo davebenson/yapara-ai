@@ -124,7 +124,7 @@ test('OutputHandlerLineByLineWithName', async (t) => {
   const tester = new MockHandlerTester();
   
   try {
-    const handler = OUTPUT_HANDLER_TYPES.line_by_line.make();
+    const handler = OUTPUT_HANDLER_TYPES.task_header.make({});
     const task = new MockTask('test-task');
     
     handler.handleOutput(task);
@@ -133,13 +133,13 @@ test('OutputHandlerLineByLineWithName', async (t) => {
     tester.reset();
     task.proc.stdout.emitData("line1\nline2\n");
     
-    assert.strictEqual(tester.capturedStdout, "[test-task] line1\n[test-task] line2\n");
+    assert.strictEqual(tester.capturedStdout, "    1: line1\n    1: line2\n");
     
     // Test stderr with task name
     tester.reset();
     task.proc.stderr.emitData("error1\n");
     
-    assert.strictEqual(tester.capturedStderr, "[test-task] error1\n");
+    assert.strictEqual(tester.capturedStderr, "    1! error1\n");
   } finally {
     tester.restore();
   }
@@ -158,13 +158,13 @@ test('OutputHandlerLineByLineWithNameAndNumber', async (t) => {
     tester.reset();
     task.proc.stdout.emitData("line1\nline2\n");
     
-    assert.strictEqual(tester.capturedStdout, "[test-task:0] line1\n[test-task:1] line2\n");
+    assert.strictEqual(tester.capturedStdout, "    1:    1: line1\n    1:    2: line2\n");
     
     // Test stderr with task name and line numbers
     tester.reset();
     task.proc.stderr.emitData("error1\n");
     
-    assert.strictEqual(tester.capturedStderr, "[test-task:0] error1\n");
+    assert.strictEqual(tester.capturedStderr, "    1:    1! error1\n");
   } finally {
     tester.restore();
   }
@@ -184,13 +184,12 @@ test('OutputHandlerLineByLineColored', async (t) => {
     task.proc.stdout.emitData("line1\n");
     
     // Color code for index 1 is green (\x1b[32m)
-    assert.strictEqual(tester.capturedStdout, "\x1b[32m[test-task] line1\n\x1b[0m");
+    assert.strictEqual(tester.capturedStdout, "    2:    1: \x1b[32mline1\x1b[0m\n");
     
     // Test stderr with color
     tester.reset();
     task.proc.stderr.emitData("error1\n");
-    
-    assert.strictEqual(tester.capturedStderr, "\x1b[32m[test-task] error1\n\x1b[0m");
+    assert.strictEqual(tester.capturedStderr, "    2:    1! \x1b[32merror1\x1b[0m\n");
   } finally {
     tester.restore();
   }
