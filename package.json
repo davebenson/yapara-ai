@@ -1,7 +1,7 @@
 {
   "name": "yapara",
   "version": "1.0.0",
-  "description": "yet another process parallelizer",
+  "description": "yet another parallelizer",
   "type": "module",
   "main": "yapara.js",
   "scripts": {
