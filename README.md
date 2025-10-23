@@ -19,6 +19,8 @@ cd yapara
 npm install
 npm link  # Optional: makes yapara available as a global command
 ```
+### Dependencies
+* shell-quote - which has no deps
 
 ## Usage
 
@@ -134,6 +136,15 @@ Save each command's output to separate files in the logs directory:
 ```bash
 yapara --output-dir=./logs --format=numbered grep -r "ERROR" ./src find /var/log -type f -mtime -1
 ```
+
+## Character Encodings
+Generally, we use UTF-8 everywhere.
+
+As a special situation, for line-by-line output formats,
+we ignore encoding and simply search for the newline character.
+
+The string-encoders we use generally substitute replacement character U+FFFD
+for invalid UTF-8 sequences.
 
 ## Development
 
